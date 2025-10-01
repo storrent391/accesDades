@@ -1,0 +1,23 @@
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
+using botiga.Services;
+using botiga.Endpoints;
+
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+// Configuració JSON
+builder.Configuration
+    .SetBasePath(AppContext.BaseDirectory)
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
+string connectionString = builder.Configuration.GetConnectionString("DefaultConnection")!;
+DatabaseConnection dbConn = new DatabaseConnection(connectionString);
+
+WebApplication app = builder.Build();
+
+// Registrar endpoints
+app.MapFamilyEndpoints(dbConn);
+app.MapProductEndpoints(dbConn);
+app.MapCartEndpoints(dbConn);
+
+app.Run("http://localhost:5000");

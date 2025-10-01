@@ -1,0 +1,29 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "activitat1", "activitat1", "{1ECBC02E-0E66-ED9F-3C21-A621C7D9D031}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "apiBotiga", "activitat1\apiBotiga\apiBotiga.csproj", "{444B7CF6-8F85-18D9-F66C-08AC99A1F002}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{444B7CF6-8F85-18D9-F66C-08AC99A1F002}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{444B7CF6-8F85-18D9-F66C-08AC99A1F002}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{444B7CF6-8F85-18D9-F66C-08AC99A1F002}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{444B7CF6-8F85-18D9-F66C-08AC99A1F002}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{444B7CF6-8F85-18D9-F66C-08AC99A1F002} = {1ECBC02E-0E66-ED9F-3C21-A621C7D9D031}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {87EE5918-8940-4DF2-B72D-A4831CD074E3}
+	EndGlobalSection
+EndGlobal
