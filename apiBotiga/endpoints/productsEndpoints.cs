@@ -39,6 +39,30 @@ public static class ProductEndpoints
             product.Insert(dbConn);
             return Results.Created($"/products/{product.Id}", product);
         });
+
+        app.MapPut("/products/{id}", (Guid id, ProductRequest req) =>
+        {
+            Product existing = ProductADO.GetById(dbConn, id);
+            if (existing == null)
+            {
+                return Results.NotFound();
+            }
+
+            Product updated = new Product
+
+            {
+                Id = id,
+                Code = req.Code,
+                Name = req.Name,
+                Price = req.Price
+            };
+
+            ProductADO.Update(dbConn, updated);
+
+            return Results.Ok(updated);
+        }
+
+        );
     }
 }
 
