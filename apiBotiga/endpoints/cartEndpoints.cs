@@ -8,20 +8,24 @@ public static class CartEndpoints
     public static void MapCartEndpoints(this WebApplication app, DatabaseConnection dbConn)
     {
         // POST /cart -> crear nou carro
-        app.MapPost("/cart", () =>
+        app.MapPost("/cart", (CartRequest req) =>
         {
-            var cart = new CartADO { Id = Guid.NewGuid() };
+            var cart = new CartADO
+            {
+                Id = Guid.NewGuid(),
+                UserId = req.UserId
+            };
             cart.Create(dbConn);
             return Results.Created($"/cart/{cart.Id}", cart);
         });
 
-        // POST /cart/{cartId}/add -> afegir producte
-        app.MapPost("/cart/{cartId}/add", (Guid cartId, CartItemRequest req) =>
+        // POST /cart/add -> afegir producte
+        app.MapPost("/cart/add", (Guid cartId, CartItemRequest req) =>
         {
             var item = new CartItemADO
             {
                 Id = Guid.NewGuid(),
-                CartId = cartId,
+                CartId = req.CartId,
                 ProductId = req.ProductId,
                 Quantity = req.Quantity
             };
@@ -38,4 +42,5 @@ public static class CartEndpoints
     }
 }
 
-public record CartItemRequest(Guid ProductId, int Quantity);
+public record CartItemRequest(Guid ProductId, Guid CartId, int Quantity);
+public record CartRequest(Guid UserId);
