@@ -39,6 +39,7 @@ public static class CartEndpoints
             CartItemADO.Remove(dbConn, cartId, productId);
             return Results.NoContent();
         });
+
     }
 }
 

@@ -39,7 +39,7 @@ public static class ProductEndpoints
             product.Insert(dbConn);
             return Results.Created($"/products/{product.Id}", product);
         });
-
+        // PUT /products/{id}
         app.MapPut("/products/{id}", (Guid id, ProductRequest req) =>
         {
             Product existing = ProductADO.GetById(dbConn, id);
