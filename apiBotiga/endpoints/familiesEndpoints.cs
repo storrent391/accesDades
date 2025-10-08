@@ -27,6 +27,27 @@ public static class FamilyEndpoints
             family.Insert(dbConn);
             return Results.Created($"/families/{family.Id}", family);
         });
+
+        app.MapPut("/families/{id}", (Guid id, FamilyRequest req) =>
+        {
+            Family existing = FamilyADO.GetById(dbConn, id);
+
+            if (existing == null)
+            {
+                return Results.NotFound();
+            }
+
+            Family updated = new Family
+
+            {
+                Id = id,
+                Name = req.Name,
+            };
+        }
+
+        );
+
+        app.MapDelete("/families/{id}", (Guid id) => FamilyADO.Delete(dbConn, id) ? Results.NoContent() : Results.NotFound());
     }
 }
 
