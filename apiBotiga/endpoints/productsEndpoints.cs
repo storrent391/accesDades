@@ -54,7 +54,8 @@ public static class ProductEndpoints
                 Id = id,
                 Code = req.Code,
                 Name = req.Name,
-                Price = req.Price
+                Price = req.Price,
+                Discount = req.Discount
             };
 
             ProductADO.Update(dbConn, updated);
