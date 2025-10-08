@@ -4,32 +4,26 @@ namespace botiga.Services;
 
 public class DatabaseConnection
 {
-    private readonly string _connectionString;
-    public SqlConnection sqlConnection;
+    
+    public SqlConnection sqlConnection { get; private set; }
+
+    private readonly string connectionString;
 
     public DatabaseConnection(string connectionString)
     {
-        _connectionString = connectionString;
+        this.connectionString = connectionString;
+        sqlConnection = new SqlConnection(connectionString);
     }
 
-    public bool Open()
+    public void Open()
     {
-        sqlConnection = new SqlConnection(_connectionString);
-        try
-        {
+        if (sqlConnection.State != System.Data.ConnectionState.Open)
             sqlConnection.Open();
-            return true;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error connecting to database: {ex.Message}");
-            return false;
-        }
     }
 
     public void Close()
     {
-        if (sqlConnection != null && sqlConnection.State == System.Data.ConnectionState.Open)
+        if (sqlConnection.State != System.Data.ConnectionState.Closed)
             sqlConnection.Close();
     }
 }
