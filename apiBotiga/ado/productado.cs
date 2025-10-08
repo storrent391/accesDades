@@ -3,7 +3,7 @@ using botiga.Services;
 
 namespace botiga.Repository;
 
-class ProductADO
+public class ProductADO
 {
     public Guid Id { get; set; }
     public Guid FamilyId { get; set; }
@@ -12,24 +12,22 @@ class ProductADO
     public decimal Price { get; set; }
     public decimal Discount { get; set; }
 
-    public void Insert(DatabaseConnection dbConn)
-    {
-        dbConn.Open();
+    public static void Insert(DatabaseConnection dbConn, ProductADO product)
+{
+    dbConn.Open();
+    string sql = @"INSERT INTO Products (Id, FamilyId, Code, Name, Price, Discount)
+                   VALUES (@Id, @FamilyId, @Code, @Name, @Price, @Discount)";
+    using SqlCommand cmd = new SqlCommand(sql, dbConn.sqlConnection);
+    cmd.Parameters.AddWithValue("@Id", product.Id);
+    cmd.Parameters.AddWithValue("@FamilyId", product.FamilyId);
+    cmd.Parameters.AddWithValue("@Code", product.Code);
+    cmd.Parameters.AddWithValue("@Name", product.Name);
+    cmd.Parameters.AddWithValue("@Price", product.Price);
+    cmd.Parameters.AddWithValue("@Discount", product.Discount);
+    cmd.ExecuteNonQuery();
+    dbConn.Close();
+}
 
-        string sql = @"INSERT INTO Products (Id, FamilyId, Code, Name, Price, Discount)
-                       VALUES (@Id, @FamilyId, @Code, @Name, @Price, @Discount)";
-
-        using SqlCommand cmd = new SqlCommand(sql, dbConn.sqlConnection);
-        cmd.Parameters.AddWithValue("@Id", Id);
-        cmd.Parameters.AddWithValue("@FamilyId", FamilyId);
-        cmd.Parameters.AddWithValue("@Code", Code);
-        cmd.Parameters.AddWithValue("@Name", Name);
-        cmd.Parameters.AddWithValue("@Price", Price);
-        cmd.Parameters.AddWithValue("@Discount", Discount);
-
-        cmd.ExecuteNonQuery();
-        dbConn.Close();
-    }
 
     public static List<ProductADO> GetAll(DatabaseConnection dbConn)
     {
@@ -84,16 +82,17 @@ class ProductADO
         dbConn.Close();
         return product;
     }
-    public static void Update(DatabaseConnection dbConn, Product product)
+
+    public static void Update(DatabaseConnection dbConn, ProductADO product)
     {
         dbConn.Open();
 
         string sql = @"UPDATE Products
-                    SET Code = @Code,
-                        Name = @Name,
-                        Price = @Price,
-                        Discount = @Discount
-                    WHERE Id = @Id";
+                       SET Code = @Code,
+                           Name = @Name,
+                           Price = @Price,
+                           Discount = @Discount
+                       WHERE Id = @Id";
 
         using SqlCommand cmd = new SqlCommand(sql, dbConn.sqlConnection);
         cmd.Parameters.AddWithValue("@Id", product.Id);
@@ -102,12 +101,10 @@ class ProductADO
         cmd.Parameters.AddWithValue("@Price", product.Price);
         cmd.Parameters.AddWithValue("@Discount", product.Discount);
 
-        int rows = cmd.ExecuteNonQuery();
-
-        Console.WriteLine($"{rows} fila actualitzada.");
-
+        cmd.ExecuteNonQuery();
         dbConn.Close();
     }
+
     public static bool Delete(DatabaseConnection dbConn, Guid id)
     {
         dbConn.Open();
@@ -118,9 +115,8 @@ class ProductADO
         cmd.Parameters.AddWithValue("@Id", id);
 
         int rows = cmd.ExecuteNonQuery();
-
         dbConn.Close();
 
-        return rows > 0; 
+        return rows > 0;
     }
 }

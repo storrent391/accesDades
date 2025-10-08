@@ -36,39 +36,33 @@ public static class ProductEndpoints
                 Discount = req.Discount
             };
 
-            product.Insert(dbConn);
+            ProductADO.Insert(dbConn, product);
             return Results.Created($"/products/{product.Id}", product);
         });
+
         // PUT /products/{id}
         app.MapPut("/products/{id}", (Guid id, ProductRequest req) =>
         {
-            Product existing = ProductADO.GetById(dbConn, id);
+            var existing = ProductADO.GetById(dbConn, id);
             if (existing == null)
-            {
                 return Results.NotFound();
-            }
 
-            Product updated = new Product
+            existing.Code = req.Code;
+            existing.Name = req.Name;
+            existing.Price = req.Price;
+            existing.Discount = req.Discount;
 
-            {
-                Id = id,
-                Code = req.Code,
-                Name = req.Name,
-                Price = req.Price,
-                Discount = req.Discount
-            };
+            ProductADO.Update(dbConn, existing);
+            return Results.Ok(existing);
+        });
 
-            ProductADO.Update(dbConn, updated);
-
-            return Results.Ok(updated);
-        }
-
-        );
         // DELETE /products/{id}
-        app.MapDelete("/products/{id}", (Guid id) => ProductADO.Delete(dbConn, id) ? Results.NoContent() : Results.NotFound());
-
+        app.MapDelete("/products/{id}", (Guid id) =>
+        {
+            var deleted = ProductADO.Delete(dbConn, id);
+            return deleted ? Results.NoContent() : Results.NotFound();
+        });
     }
-    
 }
 
 public record ProductRequest(Guid FamilyId, string Code, string Name, decimal Price, decimal Discount);
