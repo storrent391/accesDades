@@ -63,7 +63,11 @@ public static class ProductEndpoints
         }
 
         );
+        // DELETE /products/{id}
+        app.MapDelete("/products/{id}", (Guid id) => ProductADO.Delete(dbConn, id) ? Results.NoContent() : Results.NotFound());
+
     }
+    
 }
 
 public record ProductRequest(Guid FamilyId, string Code, string Name, decimal Price, decimal Discount);
