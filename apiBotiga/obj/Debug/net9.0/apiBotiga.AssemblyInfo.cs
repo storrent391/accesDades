@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("apiBotiga")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d4c61a54f135310187c583da4e48324891ad66d7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4b7ace5f7b1534fd90c7882882c0593e1a268420")]
 [assembly: System.Reflection.AssemblyProductAttribute("apiBotiga")]
 [assembly: System.Reflection.AssemblyTitleAttribute("apiBotiga")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -15,7 +15,7 @@ DatabaseConnection dbConn = new DatabaseConnection(connectionString);
 
 WebApplication app = builder.Build();
 
-// Registrar endpoints
+// Registrar <endpoints
 app.MapFamilyEndpoints(dbConn);
 app.MapProductEndpoints(dbConn);
 app.MapCartEndpoints(dbConn);

@@ -1,5 +1,7 @@
 using botiga.Repository;
 using botiga.Services;
+using botiga.Validators;
+using botiga.Common;
 
 namespace botiga.Endpoints;
 
@@ -26,6 +28,16 @@ public static class ProductEndpoints
         // POST /products
         app.MapPost("/products", (ProductRequest req) =>
         {
+            Result result = ProductValidator.Validate(req);
+            if (!result.IsOk)
+            {
+                return Results.BadRequest(new 
+                {
+                    error = result.ErrorCode,
+                    message = result.ErrorMessage
+                });
+            }
+
             var product = new ProductADO
             {
                 Id = Guid.NewGuid(),
@@ -43,6 +55,16 @@ public static class ProductEndpoints
         // PUT /products/{id}
         app.MapPut("/products/{id}", (Guid id, ProductRequest req) =>
         {
+            Result result = ProductValidator.Validate(req);
+            if (!result.IsOk)
+            {
+                return Results.BadRequest(new 
+                {
+                    error = result.ErrorCode,
+                    message = result.ErrorMessage
+                });
+            }
+
             var existing = ProductADO.GetById(dbConn, id);
             if (existing == null)
                 return Results.NotFound();
