@@ -1,5 +1,7 @@
 using botiga.Repository;
 using botiga.Services;
+using botiga.Validators;
+using botiga.Common;
 
 namespace botiga.Endpoints;
 
@@ -10,6 +12,16 @@ public static class CartEndpoints
         // POST /cart -> crear nou carro
         app.MapPost("/cart", (CartRequest req) =>
         {
+            Result result = CartValidator.Validate(req);
+            if (!result.IsOk)
+            {
+                return Results.BadRequest(new
+                {
+                    error = result.ErrorCode,
+                    message = result.ErrorMessage
+                });
+            }
+
             var cart = new CartADO
             {
                 Id = Guid.NewGuid(),
@@ -20,8 +32,18 @@ public static class CartEndpoints
         });
 
         // POST /cart/add -> afegir producte
-        app.MapPost("/cart/add", (Guid cartId, CartItemRequest req) =>
+        app.MapPost("/cart/add", (CartItemRequest req) =>
         {
+            Result result = CartItemValidator.Validate(req, dbConn);
+            if (!result.IsOk)
+            {
+                return Results.BadRequest(new
+                {
+                    error = result.ErrorCode,
+                    message = result.ErrorMessage
+                });
+            }
+
             var item = new CartItemADO
             {
                 Id = Guid.NewGuid(),
@@ -39,7 +61,6 @@ public static class CartEndpoints
             CartItemADO.Remove(dbConn, cartId, productId);
             return Results.NoContent();
         });
-
     }
 }
 
